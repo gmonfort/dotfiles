@@ -33,26 +33,7 @@ imap <F1> <Esc>
 nmap <F1> <Esc>
 
 " use system registry by default
-nnoremap y "+y
-vnoremap y "+y
-nnoremap Y "+Y
-vnoremap Y "+Y
-nnoremap p "+p
-vnoremap p "+p
-nnoremap P "+P
-vnoremap P "+P
-nnoremap d "+d
-vnoremap d "+d
-nnoremap D "+D
-vnoremap D "+D
-nnoremap x "+x
-vnoremap x "+x
-nnoremap X "+X
-vnoremap X "+X
-nnoremap c "+c
-vnoremap c "+c
-nnoremap C "+C
-vnoremap C "+C
+set clipboard=unnamed
 
 syntax on
 filetype plugin indent on
