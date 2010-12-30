@@ -38,8 +38,8 @@ nmap <F1> <Esc>
 nmap <Leader><Leader> :nohls<CR>
 
 " buffer-navigation (analogous to tab-navigation)
-nmap gb :bn<CR> 
-nmap gB :bp<CR> 
+nmap gb :bn<CR>
+nmap gB :bp<CR>
 
 " use system registry by default
 set clipboard=unnamed
@@ -88,4 +88,4 @@ set list
 set listchars=tab:→\ ,trail:·
 
 " ruby-debug
-map <Leader>d orequire 'ruby-debug';debugger
+map <Leader>d orequire 'ruby-debug';debugger<ESC>
