@@ -1,10 +1,12 @@
 set nocompatible
 set nobackup
-set directory=~/.vim/swap
+set directory^=~/.vim/swap//
 
 " basic config
 set number
 set ruler
+" allow to hide unsaved buffers
+set hidden
 
 " Indentation
 set smartindent
@@ -32,6 +34,13 @@ endif
 imap <F1> <Esc>
 nmap <F1> <Esc>
 
+" disable search highlight until the next search
+nmap <Leader><Leader> :nohls<CR>
+
+" buffer-navigation (analogous to tab-navigation)
+nmap gb :bn<CR> 
+nmap gB :bp<CR> 
+
 " use system registry by default
 set clipboard=unnamed
 
@@ -50,7 +59,7 @@ augroup MyAutoCommands
 
   " Ruby files
   autocmd FileType ruby,eruby,      set sw=2 ts=2 sts=2 et
-  autocmd FileType ruby,eruby,haml  imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
+  autocmd FileType ruby,eruby,      imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
   autocmd FileType ruby             nnoremap <C-D> orequire "ruby-debug"; debugger; ""<Esc>
 
@@ -77,3 +86,6 @@ augroup END
 " show tabs as blank-padded arrows, trailing spaces as middle-dots
 set list
 set listchars=tab:→\ ,trail:·
+
+" ruby-debug
+map <Leader>d orequire 'ruby-debug';debugger
