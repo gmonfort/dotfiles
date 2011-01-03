@@ -61,7 +61,7 @@ augroup MyAutoCommands
   autocmd FileType ruby,eruby,      set sw=2 ts=2 sts=2 et
   autocmd FileType ruby,eruby,      imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
-  autocmd FileType ruby             nnoremap <C-D> orequire "ruby-debug"; debugger; ""<Esc>
+  autocmd FileType ruby             nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
 
   " HTML/HAML
   autocmd FileType html,haml   set shiftwidth=2 softtabstop=2 expandtab
@@ -86,6 +86,3 @@ augroup END
 " show tabs as blank-padded arrows, trailing spaces as middle-dots
 set list
 set listchars=tab:→\ ,trail:·
-
-" ruby-debug
-map <Leader>d orequire 'ruby-debug';debugger<ESC>
