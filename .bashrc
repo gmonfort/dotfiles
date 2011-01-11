@@ -128,7 +128,7 @@ vim() {
   if [[ -x $macvim_path ]]; then
     "$macvim_path" "$@"
   else
-    vim "$@"
+    command vim "$@"
   fi
 }
 
