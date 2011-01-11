@@ -35,3 +35,9 @@ gem i vagrant
 
 #Bundlers
 gem i bundler isolate
+
+for f in ~/dotfiles/{,.[!.]}*; do
+  [[ ${f##*/} = setup.sh ]] || [[ ${f##*/} = .git ]] && continue
+  [[ -e ~/${f##*/} ]] && mv ~/"${f##*/}"{,.bak}
+  ln -s "$f" ~/"${f##*/}"
+done
