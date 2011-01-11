@@ -1,5 +1,3 @@
-#!/bin/sh
-
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # We're using 64 bits, right?
@@ -62,6 +60,7 @@ alias unhitch='hitch -u'
 ################################################################################
 
 # General
+alias ll='ls -la'
 alias ls='ls -G'
 alias c='clear'
 alias g='git'

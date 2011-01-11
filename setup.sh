@@ -26,3 +26,12 @@ bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
 rvm install 1.9.2
 rvm install ree
 rvm use 1.9.2 --default
+
+#Some gems
+#Hitch
+gem i hitch
+#Vagrant
+gem i vagrant
+
+#Bundlers
+gem i bundler isolate
