@@ -123,11 +123,13 @@ urldecode() {
 }
 
 # Use MacVim's terminal vim (requires MacVim installed via homebrew)
-#
-# FIXME: just symlinking this file makes the system clipboard unavailable to the
-#        user, but calling it as a function works.
 vim() {
-  /usr/local/Cellar/macvim/HEAD/MacVim.app/Contents/MacOS/Vim $@;
+  local macvim_path=/usr/local/Cellar/macvim/HEAD/MacVim.app/Contents/MacOS/Vim
+  if [[ -x $macvim_path ]]; then
+    "$macvim_path" "$@"
+  else
+    vim "$@"
+  fi
 }
 
 ################################################################################
