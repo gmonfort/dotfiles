@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # homebrew
 ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
 brew install git
@@ -36,8 +38,4 @@ gem i vagrant
 #Bundlers
 gem i bundler isolate
 
-for f in ~/dotfiles/{,.[!.]}*; do
-  [[ ${f##*/} = setup.sh ]] || [[ ${f##*/} = .git ]] && continue
-  [[ -e ~/${f##*/} ]] && mv ~/"${f##*/}"{,.bak}
-  ln -s "$f" ~/"${f##*/}"
-done
+exec symlink_dotfiles.sh
