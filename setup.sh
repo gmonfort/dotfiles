@@ -39,4 +39,5 @@ gem i vagrant
 #Bundlers
 gem i bundler isolate
 
-exec symlink_dotfiles.sh
+# rename current dotfiles to .bak and replace them with symlinks to the files on this repo
+exec ./symlink_dotfiles.sh
