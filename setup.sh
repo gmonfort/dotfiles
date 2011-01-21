@@ -10,6 +10,7 @@ brew install mysql
 brew install postgresql
 brew install sqlite
 brew install bash-completion
+brew install ack
 
 # postgres
 initdb `brew --prefix`/var/postgres
