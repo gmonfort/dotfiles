@@ -68,6 +68,7 @@ alias g='git'
 alias ..='cd ..'
 alias screen='screen -U'
 alias retag='ctags --extra=+f -R .'
+alias start_postgres='postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
 
 # Ruby
 alias r='rake'
