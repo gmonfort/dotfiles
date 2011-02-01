@@ -41,6 +41,14 @@ nmap <Leader><Leader> :nohls<CR>
 nmap gb :bn<CR>
 nmap gB :bp<CR>
 
+
+" switch between splits through f7 and f8
+map <f8> <c-w>j<c-w>_
+imap <f8> <esc><f8>
+
+map <f7> <c-w>k<c-w>_
+imap <f7> <esc><f7>
+
 " use system registry by default
 set clipboard=unnamed
 
@@ -86,3 +94,4 @@ augroup END
 " show tabs as blank-padded arrows, trailing spaces as middle-dots
 set list
 set listchars=tab:→\ ,trail:·
+
