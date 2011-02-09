@@ -52,6 +52,7 @@ hitch() {
   fi
 }
 alias unhitch='hitch -u'
+hitch
 
 ################################################################################
 #                                                                              #
@@ -64,9 +65,12 @@ alias ll='ls -la'
 alias ls='ls -G'
 alias c='clear'
 alias g='git'
+alias gs='git status'
+alias gl='git log'
 alias ..='cd ..'
 alias screen='screen -U'
 alias retag='ctags --extra=+f -R .'
+alias start_postgres='postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
 
 # Ruby
 alias r='rake'
@@ -130,6 +134,10 @@ vim() {
   else
     command vim "$@"
   fi
+}
+
+ackvim(){
+  ack -l "$1" $2 | xargs mvim -o +/"$1"
 }
 
 ################################################################################

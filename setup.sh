@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # homebrew
 ruby -e "$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)"
 brew install git
@@ -8,6 +10,7 @@ brew install mysql
 brew install postgresql
 brew install sqlite
 brew install bash-completion
+brew install ack
 
 # postgres
 initdb `brew --prefix`/var/postgres
@@ -36,8 +39,5 @@ gem i vagrant
 #Bundlers
 gem i bundler isolate
 
-for f in ~/dotfiles/{,.[!.]}*; do
-  [[ ${f##*/} = setup.sh ]] || [[ ${f##*/} = .git ]] && continue
-  [[ -e ~/${f##*/} ]] && mv ~/"${f##*/}"{,.bak}
-  ln -s "$f" ~/"${f##*/}"
-done
+# rename current dotfiles to .bak and replace them with symlinks to the files on this repo
+exec ./symlink_dotfiles.sh

@@ -4,3 +4,4 @@
 --follow
 --group
 --smart-case
+--type-add=ruby=.haml,.erb,.rake,.scss,.sass,.feature,.js
