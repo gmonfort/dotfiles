@@ -4,6 +4,7 @@
 	branch = auto
 [alias]
 	st = status
+	co = checkout
 	nb = checkout -b
 	up = pull --rebase
 	co = checkout
