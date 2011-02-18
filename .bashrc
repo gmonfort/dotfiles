@@ -50,9 +50,8 @@ hitch() {
   if [[ -s "$HOME/.hitch_export_authors" ]]; then
     . "$HOME/.hitch_export_authors";
   fi
-}
+}; hitch
 alias unhitch='hitch -u'
-hitch
 
 ################################################################################
 #                                                                              #
@@ -128,7 +127,7 @@ urldecode() {
 
 # Use MacVim's terminal vim (requires MacVim installed via homebrew)
 vim() {
-  local macvim_path=/usr/local/Cellar/macvim/HEAD/MacVim.app/Contents/MacOS/Vim
+  local macvim_path=$(brew info macvim | sed -n '/installed to:/ {n;p;q;}')/MacVim.app/Contents/MacOS/Vim
   if [[ -x $macvim_path ]]; then
     "$macvim_path" "$@"
   else
