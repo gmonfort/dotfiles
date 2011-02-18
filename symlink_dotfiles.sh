@@ -5,6 +5,6 @@ toplevel="$(git rev-parse --show-toplevel)" || exit
 
 cd "$toplevel" && for f in .[!.]*; do
   [[ $f = .git ]] && continue
-  [[ -e ~/$f ]] && mv ~/"$f"{,.bak}
+  [[ -f ~/$f || -L ~/$f ]] && mv ~/"$f"{,.bak}
   ln -s "$toplevel/$f" ~/"$f"
 done
