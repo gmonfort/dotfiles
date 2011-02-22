@@ -5,6 +5,7 @@ set directory^=~/.vim/swap//
 " basic config
 set number
 set ruler
+set laststatus=2
 " allow to hide unsaved buffers
 set hidden
 
