@@ -71,6 +71,7 @@ augroup MyAutoCommands
   autocmd FileType ruby,eruby,      imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
   autocmd FileType ruby             nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
+  autocmd FileType ruby             nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
 
   " HTML/HAML
   autocmd FileType html,haml   set shiftwidth=2 softtabstop=2 expandtab
