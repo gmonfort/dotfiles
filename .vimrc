@@ -67,6 +67,7 @@ augroup MyAutoCommands
   autocmd BufRead,BufNewFile *.liquid,*.mustache        setfiletype liquid
 
   " Ruby files
+  autocmd FileType cucumber         set sw=2 ts=2 sts=2 et
   autocmd FileType ruby,eruby,      set sw=2 ts=2 sts=2 et
   autocmd FileType ruby,eruby,      imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
