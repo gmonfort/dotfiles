@@ -1,3 +1,7 @@
+set guifont=Menlo:h13
+set background=dark
+colorscheme desert
+
 set nocompatible
 set nobackup
 set directory^=~/.vim/swap//
@@ -83,7 +87,7 @@ augroup MyAutoCommands
   autocmd FileType haml        nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
 
   " Javascript
-  autocmd FileType javascript  set shiftwidth=4 softtabstop=4 expandtab
+  autocmd FileType javascript  set shiftwidth=2 softtabstop=2 expandtab
 
   " CSS
   autocmd FileType sass,css    set shiftwidth=2 softtabstop=2 expandtab
