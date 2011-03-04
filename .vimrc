@@ -79,6 +79,9 @@ augroup MyAutoCommands
   " HTML/HAML
   autocmd FileType html,haml   set shiftwidth=2 softtabstop=2 expandtab
 
+  autocmd FileType haml        nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
+  autocmd FileType haml        nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
+
   " Javascript
   autocmd FileType javascript  set shiftwidth=4 softtabstop=4 expandtab
 
