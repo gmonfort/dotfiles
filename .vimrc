@@ -8,6 +8,8 @@ set ruler
 set laststatus=2
 " allow to hide unsaved buffers
 set hidden
+" enable mouse (for terminals that support it)
+set mouse=a
 
 " Indentation
 set smartindent
