@@ -35,12 +35,13 @@ if [[ -s ~/.rvm/scripts/rvm ]]; then
 fi
 
 # Bash completion
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-  . `brew --prefix`/etc/bash_completion
+_brew_prefix=$(brew --prefix)
+if [[ -f "$_brew_prefix"/etc/bash_completion ]]; then
+  . "$_brew_prefix"/etc/bash_completion
 fi
 
-if [ -f `brew --prefix`/Library/Contributions/brew_bash_completion.sh ]; then
-  . `brew --prefix`/Library/Contributions/brew_bash_completion.sh
+if [[ -f "$_brew_prefix"/Library/Contributions/brew_bash_completion.sh ]]; then
+  . "$_brew_prefix"/Library/Contributions/brew_bash_completion.sh
 fi
 
 # Hitch
