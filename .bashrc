@@ -138,7 +138,7 @@ vim() {
 
 ackvim(){
   local pattern=$1; shift
-  ack -l --print0 "$pattern" "$@" | xargs -0o mvim +/"$pattern"
+  ack -l --print0 "$pattern" "$@" | xargs -0o mvim -o +/"$pattern"
 }
 
 ################################################################################
