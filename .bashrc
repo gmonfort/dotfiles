@@ -141,6 +141,30 @@ ackvim(){
   ack -l --print0 "$pattern" "$@" | xargs -0o mvim -o +/"$pattern"
 }
 
+load_snapshot() {
+  local database=${1:-$SNAPSHOT_DATABASE}
+  local dumpname=${2:-~/dump.sql.gz}
+
+  [[ $database ]] || { echo "ERROR: database not specified" >&2; return 1; }
+  [[ -e $dumpname ]] || { echo "ERROR: file '$dumpname' does not exist" >&2; return 1; }
+
+  rake db:drop && rake db:create && gzip -d < "$dumpname" | psql "$database"
+}
+
+save_snapshot() {
+  local database=${1:-$SNAPSHOT_DATABASE}
+  local dumpname=${2:-~/dump.sql.gz}
+
+  [[ $database ]] || { echo "ERROR: database not specified" >&2; return 1; }
+  if [[ -e $dumpname ]]; then
+    read -p "file '$dumpname' exists, overwrite? " -n 1
+    echo
+    [[ $REPLY = [Yy] ]] || return 0
+  fi
+
+  pg_dump "$database" | gzip > "$dumpname"
+}
+
 ################################################################################
 #                                                                              #
 #                                     Prompt                                   #
