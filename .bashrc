@@ -136,26 +136,44 @@ vim() {
   fi
 }
 
+# open mvim for ack search results
 ackvim(){
   local pattern=$1; shift
   ack -l --print0 "$pattern" "$@" | xargs -0o mvim -o +/"$pattern"
 }
 
-load_snapshot() {
-  local database=${1:-$SNAPSHOT_DATABASE}
-  local dumpname=${2:-~/dump.sql.gz}
+# reverse find
+rfind() {
+  local target="$1" cwd="$PWD"
 
-  [[ $database ]] || { echo "ERROR: database not specified" >&2; return 1; }
+  [[ "$target" ]] || { echo "ERROR: missing target" >&2; return 1; }
+
+  while [[ "$cwd" ]]; do
+    if [[ -e "$cwd"/"$target" ]]; then
+      echo "$cwd"/"$target"
+      return 0
+    else
+      cwd="${cwd%/*}"
+    fi
+  done
+  return 1
+}; export -f rfind
+
+load_snapshot() {
+  local dumpname=${1:-~/dump.sql.gz}
+  local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
+  local database=$(ruby -ryaml -e 'puts YAML.load_file('"$config"').fetch("development", {}).fetch("database")')
+
   [[ -e $dumpname ]] || { echo "ERROR: file '$dumpname' does not exist" >&2; return 1; }
 
   rake db:drop && rake db:create && gzip -d < "$dumpname" | psql "$database"
 }
 
 save_snapshot() {
-  local database=${1:-$SNAPSHOT_DATABASE}
-  local dumpname=${2:-~/dump.sql.gz}
+  local dumpname=${1:-~/dump.sql.gz}
+  local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
+  local database=$(ruby -ryaml -e 'puts YAML.load_file('"$config"').fetch("development", {}).fetch("database")')
 
-  [[ $database ]] || { echo "ERROR: database not specified" >&2; return 1; }
   if [[ -e $dumpname ]]; then
     read -p "file '$dumpname' exists, overwrite? " -n 1
     echo
