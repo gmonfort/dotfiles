@@ -162,7 +162,7 @@ rfind() {
 load_snapshot() {
   local dumpname=${1:-~/dump.sql.gz}
   local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
-  local database=$(ruby -ryaml -e 'puts YAML.load_file('"$config"').fetch("development", {}).fetch("database")')
+  local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
 
   [[ -e $dumpname ]] || { echo "ERROR: file '$dumpname' does not exist" >&2; return 1; }
 
@@ -172,7 +172,7 @@ load_snapshot() {
 save_snapshot() {
   local dumpname=${1:-~/dump.sql.gz}
   local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
-  local database=$(ruby -ryaml -e 'puts YAML.load_file('"$config"').fetch("development", {}).fetch("database")')
+  local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
 
   if [[ -e $dumpname ]]; then
     read -p "file '$dumpname' exists, overwrite? " -n 1
