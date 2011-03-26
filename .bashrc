@@ -152,9 +152,8 @@ rfind() {
     if [[ -e "$cwd"/"$target" ]]; then
       echo "$cwd"/"$target"
       return 0
-    else
-      cwd="${cwd%/*}"
     fi
+    cwd="${cwd%/*}"
   done
   return 1
 }; export -f rfind
