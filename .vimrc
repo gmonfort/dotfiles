@@ -59,6 +59,8 @@ imap <f7> <esc><f7>
 " use system registry by default
 set clipboard=unnamed
 
+call pathogen#runtime_append_all_bundles()
+
 syntax on
 filetype plugin indent on
 
