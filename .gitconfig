@@ -9,6 +9,7 @@
 	up = pull --rebase
 	br = branch
 	serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+	commiters = !git log --pretty=short --no-merges | git shortlog -nes
 [core]
 	editor = vim
 	pager = "less -RiqMSj5"
