@@ -1,0 +1,3 @@
+[submodule ".emacs.d/nu7macs"]
+	path = .emacs.d/nu7macs
+	url = git://github.com/nu7hatch/nu7macs
