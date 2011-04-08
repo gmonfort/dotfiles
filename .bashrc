@@ -70,7 +70,6 @@ alias gl='git log'
 alias ..='cd ..'
 alias screen='screen -U'
 alias retag='ctags --extra=+f -R .'
-alias start_postgres='postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
 
 # Ruby
 alias r='rake'
@@ -182,6 +181,12 @@ save_snapshot() {
   pg_dump "$database" | gzip > "$dumpname"
 }
 
+# postgres helpers
+start_postgres() {
+  postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log
+}; export -f start_postgres
+alias start_postgres_bg='screen -dmS postgres bash -c start_postgres'
+
 ################################################################################
 #                                                                              #
 #                                     Prompt                                   #
@@ -193,3 +198,7 @@ save_snapshot() {
 #   ▸
 export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
 (git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+
+
+## monaqasat local ##
+alias monaqasat_refresh='start_postgres_bg; git checkout master && git pull --rebase && bundle install && rake db:reset && rake db:populate'
