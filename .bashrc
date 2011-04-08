@@ -181,12 +181,6 @@ save_snapshot() {
   pg_dump "$database" | gzip > "$dumpname"
 }
 
-# postgres helpers
-start_postgres() {
-  postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log
-}; export -f start_postgres
-alias start_postgres_bg='screen -dmS postgres bash -c start_postgres'
-
 ################################################################################
 #                                                                              #
 #                                     Prompt                                   #
