@@ -198,7 +198,3 @@ alias start_postgres_bg='screen -dmS postgres bash -c start_postgres'
 #   ▸
 export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
 (git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
-
-
-## monaqasat local ##
-alias monaqasat_refresh='start_postgres_bg; git checkout master && git pull --rebase && bundle install && rake db:reset && rake db:populate'
