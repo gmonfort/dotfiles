@@ -48,6 +48,10 @@ nmap <Leader><Leader> :nohls<CR>
 nmap gb :bn<CR>
 nmap gB :bp<CR>
 
+" switchers
+nmap <Leader>i :set ignorecase!<CR>
+nmap <Leader>n :set number!<CR>
+nmap <Leader>w :set wrap!<CR>
 
 " switch between splits through f7 and f8
 map <f8> <c-w>j<c-w>_
