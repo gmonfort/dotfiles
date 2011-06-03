@@ -1,185 +1,151 @@
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+if [[ -n "$PS1" ]]; then
 
-# We're using 64 bits, right?
-export ARCHFLAGS="-arch x86_64"
+    # Global path for cd (no matter which directory you're in right now)
+    export CDPATH=.:~:~/code
 
-# Editor
-export EDITOR=vim
-export VISUAL=$EDITOR
+    # Keep 3000 lines of history
+    export HISTFILESIZE=3000
 
-# Global path for cd (no matter which directory you're in right now)
-export CDPATH=.:~:~/code
+    # Ignore from history repeat commands, and some other unimportant ones
+    export HISTIGNORE="&:[bf]g:c:exit"
 
-# Ignore from history repeat commands, and some other unimportant ones
-export HISTIGNORE="&:[bf]g:c:exit"
+    # don't put duplicate lines in the history. See bash(1) for more options
+    export HISTCONTROL=ignoredups:ignorespace
 
-# Ruby development made easier
-export RUBYOPT="rubygems Ilib Itest Ispec"
+    # Ruby development made easier
+    export RUBYOPT="rubygems Ilib Itest Ispec"
 
-# Use vim to browse man pages. One can use Ctrl-[ and Ctrl-t
-# to browse and return from referenced man pages. ZZ or q to quit.
-# NOTE: initially within vim, one can goto the man page for the
-#       word under the cursor by using [section_number]K.
-export MANPAGER='bash -c "vim -MRn -c \"set ft=man nomod nolist nospell nonu\" \
--c \"nm q :qa!<CR>\" -c \"nm <end> G\" -c \"nm <home> gg\"</dev/tty <(col -b)"'
+    # Use vim to browse man pages. One can use Ctrl-[ and Ctrl-t
+    # to browse and return from referenced man pages. ZZ or q to quit.
+    # NOTE: initially within vim, one can goto the man page for the
+    #       word under the cursor by using [section_number]K.
+    export MANPAGER='bash -c "vim -MRn -c \"set ft=man nomod nolist nospell nonu\" \
+        -c \"nm q :qa!<CR>\" -c \"nm <end> G\" -c \"nm <home> gg\"</dev/tty <(col -b)"'
 
-################################################################################
-#                                                                              #
-#                               External Scripts                               #
-#                                                                              #
-################################################################################
+    export EDITOR=vim
 
-# Ruby Version Manager
-if [[ -s ~/.rvm/scripts/rvm ]]; then
-  . ~/.rvm/scripts/rvm;
-fi
+    shopt -s checkwinsize
 
-# Bash completion
-_brew_prefix=$(brew --prefix)
-if [[ -f "$_brew_prefix"/etc/bash_completion ]]; then
-  . "$_brew_prefix"/etc/bash_completion
-fi
+    # make less more friendly for non-text input files, see lesspipe(1)
+    [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
-if [[ -f "$_brew_prefix"/Library/Contributions/brew_bash_completion.sh ]]; then
-  . "$_brew_prefix"/Library/Contributions/brew_bash_completion.sh
-fi
-
-# Hitch
-hitch() {
-  command hitch "$@"
-
-  if [[ -s "$HOME/.hitch_export_authors" ]]; then
-    . "$HOME/.hitch_export_authors";
-  fi
-}; hitch
-alias unhitch='hitch -u'
-
-################################################################################
-#                                                                              #
-#                                    Aliases                                   #
-#                                                                              #
-################################################################################
-
-# General
-alias ll='ls -la'
-alias ls='ls -G'
-alias c='clear'
-alias g='git'
-alias gs='git status'
-alias gl='git log'
-alias ..='cd ..'
-alias screen='screen -U'
-alias retag='ctags --extra=+f -R .'
-
-# Ruby
-alias r='rake'
-
-# Rails 2
-alias sg='script/generate'
-alias ss='script/server'
-alias sc='script/console'
-alias sd='script/dbconsole'
-
-# Rails 3
-alias rg='script/rails generate'
-alias rs='script/rails server'
-alias rc='script/rails console'
-alias rd='script/rails dbconsole'
-
-# Bundler
-alias b='bundle'
-alias bx='bundle exec'
-
-################################################################################
-#                                                                              #
-#                                   Functions                                  #
-#                                                                              #
-################################################################################
-
-# cd into matching gem directory
-cdgem() {
-  local gempath=$(gem env gemdir)/gems
-  if [[ $1 == "" ]]; then
-    cd $gempath
-    return
-  fi
-
-  local gem=$(ls $gempath | g $1 | sort | tail -1)
-  if [[ $gem != "" ]]; then
-    cd $gempath/$gem
-  fi
-}
-_cdgem() {
-  COMPREPLY=($(compgen -W '$(ls `gem env gemdir`/gems)' -- ${COMP_WORDS[COMP_CWORD]}))
-  return 0;
-}
-complete -o default -o nospace -F _cdgem cdgem;
-
-# Encode the string into "%xx"
-urlencode() {
-  ruby -e 'puts ARGV[0].split(/%/).map{|c|"%c"%c.to_i(16)} * ""' $1
-}
-
-# Decode a urlencoded string ("%xx")
-urldecode() {
-  ruby -r cgi -e 'puts CGI.unescape ARGV[0]' $1
-}
-
-# Use MacVim's terminal vim (requires MacVim installed via homebrew)
-vim() {
-  local macvim_path=$(brew info macvim | sed -n '/installed to:/ {n;p;q;}')/MacVim.app/Contents/MacOS/Vim
-  if [[ -x $macvim_path ]]; then
-    "$macvim_path" "$@"
-  else
-    command vim "$@"
-  fi
-}
-
-# open mvim for ack search results
-ackvim(){
-  local pattern=$1; shift
-  ack -l --print0 "$pattern" "$@" | xargs -0o mvim -o +/"$pattern"
-}
-
-# reverse find
-rfind() {
-  local target="$1" cwd="$PWD"
-
-  [[ "$target" ]] || { echo "ERROR: missing target" >&2; return 1; }
-
-  while [[ "$cwd" ]]; do
-    if [[ -e "$cwd"/"$target" ]]; then
-      echo "$cwd"/"$target"
-      return 0
+    # set current git branch in a variable
+    if [ "$(type -t __git_ps1)" = "function" ]; then
+        git_branch=$(__git_ps1)
     fi
-    cwd="${cwd%/*}"
-  done
-  return 1
-}; export -f rfind
 
-load_snapshot() {
-  local dumpname=${1:-~/dump.sql.gz}
-  local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
-  local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
+    eval "`dircolors -b`"
 
-  [[ -e $dumpname ]] || { echo "ERROR: file '$dumpname' does not exist" >&2; return 1; }
+    if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+    fi
 
-  dropdb "$database" && rake db:create && gzip -d < "$dumpname" | psql "$database"
-}
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 
-save_snapshot() {
-  local dumpname=${1:-~/dump.sql.gz}
-  local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
-  local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
+    xhost +LOCAL:
 
-  if [[ -e $dumpname ]]; then
-    read -p "file '$dumpname' exists, overwrite? " -n 1
-    echo
-    [[ $REPLY = [Yy] ]] || return 0
-  fi
+    export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.6/dist-packages
+    export CATALINA_HOME=/var/lib/tomcat6
+    export HOSTNAME=`/bin/hostname`
+    # dh_make variables
+    export DEBFULLNAME="German A. Monfort"
+    export DEBEMAIL=german.monfort@gmail.com
 
-  pg_dump "$database" | gzip > "$dumpname"
-}
+    # External Scripts #
+
+    # Hitch
+    hitch() {
+        command hitch "$@"
+        if [[ -s "$HOME/.hitch_export_authors" ]]; then
+            . "$HOME/.hitch_export_authors";
+        fi
+    };
+
+    if [[ $(type -t hitch) = "function" ]]; then hitch; fi
+    alias unhitch='hitch -u'
+
+    ################################################################################
+    #                                                                              #
+    #                                   Functions                                  #
+    #                                                                              #
+    ################################################################################
+
+    # cd into matching gem directory
+    cdgem() {
+        local gempath=$(gem env gemdir)/gems
+        if [[ $1 == "" ]]; then
+            cd $gempath
+            return
+        fi
+
+        local gem=$(ls $gempath | grep -i $1 | sort | tail -1)
+        if [[ $gem != "" ]]; then
+            cd $gempath/$gem
+        fi
+    }
+    _cdgem() {
+        COMPREPLY=($(compgen -W '$(ls `gem env gemdir`/gems)' -- ${COMP_WORDS[COMP_CWORD]}))
+        return 0;
+    }
+    complete -o default -o nospace -F _cdgem cdgem;
+
+    # Encode the string into "%xx"
+    urlencode() {
+        ruby -e 'puts ARGV[0].split(/%/).map{|c|"%c"%c.to_i(16)} * ""' $1
+    }
+
+    # Decode a urlencoded string ("%xx")
+    urldecode() {
+        ruby -r cgi -e 'puts CGI.unescape ARGV[0]' $1
+    }
+
+    b64encode() {
+        ruby -e 'puts ARGV[0].unpack("m")[0]'
+    }
+
+    b64decode() {
+        ruby -e 'puts ARGV[0].pack("m").gsub(/\s/, "")'
+    }
+
+    load_snapshot() {
+        local dumpname=${1:-~/dump.sql.gz}
+        local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
+        local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
+
+        [[ -e $dumpname ]] || { echo "ERROR: file '$dumpname' does not exist" >&2; return 1; }
+
+        dropdb "$database" && rake db:create && gzip -d < "$dumpname" | psql "$database"
+    }
+
+    save_snapshot() {
+        local dumpname=${1:-~/dump.sql.gz}
+        local config=$(rfind config/database.yml) || { echo "ERROR: could not find 'config/database.yml'" >&2; return 1; }
+        local database=$(ruby -ryaml -e "puts YAML.load_file('$config').fetch('development', {}).fetch('database')")
+
+        if [[ -e $dumpname ]]; then
+            read -p "file '$dumpname' exists, overwrite? " -n 1
+            echo
+            [[ $REPLY = [Yy] ]] || return 0
+        fi
+
+        pg_dump "$database" | gzip > "$dumpname"
+    }
+
+    # Cucumber
+    alias rf='rake features'
+
+    # For running specific features.
+    function rff {
+        # rake features FEATURE=features/"$1".feature
+        bundle exec cucumber --require features/support --require features/step_definitions features/"$1".feature
+    }
+
+    # For running specific line numbers
+    function rffl {
+        cucumber features/"$1".feature:"$2"
+    }
 
 ################################################################################
 #                                                                              #
@@ -190,5 +156,22 @@ save_snapshot() {
 # Prompt in two lines:
 #   <hostname> <full path to pwd> (git: <git branch>)
 #   ▸
-export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
-(git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+# export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
+    #   (git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+
+# PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]]\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+export PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]] \[\033[01;33m\]\w $(__git_ps1 "\[\033[01;36m\](git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+
+fi
+
+# RVM ruby version system
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+[[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion
+
+
+# NOTES
+#######################################################
+# To temporarily bypass an alias, we preceed the command with a \ 
+# EG:  the ls command is aliased, but to use the normal ls command you would
+# type \ls
