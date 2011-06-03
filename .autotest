@@ -1,5 +1,0 @@
-begin
-  require "autotest/fsevent"
-rescue LoadError
-  STDERR.puts "** You should install autotest-fsevent to preserve your hard drive :)"
-end
