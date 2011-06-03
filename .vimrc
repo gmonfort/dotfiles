@@ -1,19 +1,20 @@
-set guifont=Menlo:h13
-set background=dark
-colorscheme desert
-
 set nocompatible
 set nobackup
+set nowb
+set noswapfile
+
 set directory^=~/.vim/swap//
 
 " basic config
 set number
 set ruler
-set laststatus=2
 " allow to hide unsaved buffers
 set hidden
 " enable mouse (for terminals that support it)
 set mouse=a
+set showcmd
+
+set sw=4 ts=4 sts=4 et
 
 " Indentation
 set smartindent
@@ -28,8 +29,30 @@ set incsearch
 set ignorecase
 set hlsearch
 
+set autoread " Automatically reload files that have been changed outside vim
+
 set encoding=utf8
 set tenc=utf8
+
+set foldmethod=syntax
+set formatoptions=qrct
+
+set guioptions-=T " no toolbar
+set guioptions-=m " no menus
+
+" Statusline
+set laststatus=2 "Always show statusline
+set statusline=
+set statusline+=%2*%-3.3n%0*\                " buffer number
+set statusline+=%F\                          " file name
+set statusline+=%2*		                   	" black background
+set statusline+=%=		                   	" right align
+set statusline+=%h%m%r%w							" flags
+set statusline+=\[%{strlen(&ft)?&ft:'none'}, " filetype
+set statusline+=%{&encoding},                " encoding
+set statusline+=%{&fileformat}]              " file format
+set statusline+=\ %0*									" end of black background
+set statusline+=%2*%-14.(%l,%c%V%)\ %<%0*\ %P        " offset
 
 if &modifiable
   set fileencoding=utf8
@@ -38,8 +61,8 @@ endif
 
 " Disable F1 from opening the help
 " I can type :help perfectly fine, thank you very much
-imap <F1> <Esc>
-nmap <F1> <Esc>
+" imap <F1> <Esc>
+" nmap <F1> <Esc>
 
 " disable search highlight until the next search
 nmap <Leader><Leader> :nohls<CR>
@@ -60,6 +83,23 @@ imap <f8> <esc><f8>
 map <f7> <c-w>k<c-w>_
 imap <f7> <esc><f7>
 
+noremap <C-BS> :bdelete<CR>
+noremap <F4> :bdelete<CR>
+noremap <S-Up> :bnext<CR>
+noremap <S-Down> :bprev<CR>
+noremap <F1> :E<CR>
+noremap <F9> :source ~/.vimrc<CR>
+noremap <S-F9> :e ~/.vimrc<CR>
+noremap <F2> :NERDTreeToggle<CR>
+
+vnoremap s' "zdi'<C-R>z'<ESC>
+vnoremap s" "zdi"<C-R>z"<ESC>
+vnoremap < <gv
+vnoremap > >gv 
+
+" Execute current line as a vim script
+nnoremap <Leader>e "ayy :@a<CR>
+
 " use system registry by default
 set clipboard=unnamed
 
@@ -68,48 +108,134 @@ call pathogen#runtime_append_all_bundles()
 syntax on
 filetype plugin indent on
 
-augroup MyAutoCommands
-  " Clear old autocmds in group
-  autocmd!
+if has("gui_running")
+   set guifont=Monospace\ 11  " use this font
+else
+   " colorscheme elflord    " use this color scheme
+   " set background=dark    " adapt colors for background
+endif
 
-  " File types
-  autocmd BufRead,BufNewFile *.haml                     setfiletype haml
-  autocmd BufRead,BufNewFile *.sass,*.scss              setfiletype sass
-  autocmd BufRead,BufNewFile config.ru,Gemfile,Isolate  setfiletype ruby
-  autocmd BufRead,BufNewFile *.liquid,*.mustache        setfiletype liquid
+if has("autocmd")
+   filetype plugin on
+   " augroup bufEnter
+   "    au!
+   "    au BufEnter * :cd %:p:h 
+   " augroup END
 
-  " Ruby files
-  autocmd FileType cucumber         set sw=2 ts=2 sts=2 et
-  autocmd FileType ruby,eruby,      set sw=2 ts=2 sts=2 et
-  autocmd FileType ruby,eruby,      imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
+   augroup generic
+      au!
+      autocmd BufRead,BufNewFile *.haml                     setfiletype haml
+      autocmd BufRead,BufNewFile *.sass,*.scss              setfiletype sass
+      autocmd BufRead,BufNewFile config.ru,Gemfile,Isolate  setfiletype ruby
+      autocmd BufRead,BufNewFile *.liquid,*.mustache        setfiletype liquid
+      autocmd FileType javascript  set sw=2 sts=2 et
+      autocmd FileType sass,css    set sw=2 sts=2 et
+   augroup END
 
-  autocmd FileType ruby             nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
-  autocmd FileType ruby             nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
+   augroup python
+      au!
+      autocmd FileType python set omnifunc=pythoncomplete#CompletePython
+      autocmd FileType python set softtabstop=4
+      autocmd FileType python set ts=4
+      autocmd FileType python set sw=4
+   augroup END
 
-  " HTML/HAML
-  autocmd FileType html,haml   set shiftwidth=2 softtabstop=2 expandtab
+   augroup ruby
+      au!
+      autocmd FileType cucumber     set sw=2 ts=2 sts=2 et
 
-  autocmd FileType haml        nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
-  autocmd FileType haml        nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
+      "autocmd FileType ruby,eruby   set omnifunc=rubycomplete#CompleteRuby
+      autocmd FileType ruby,eruby   set sw=2 ts=2 sts=2 foldlevel=10 et
+      autocmd FileType ruby,eruby   imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
-  " Javascript
-  autocmd FileType javascript  set shiftwidth=2 softtabstop=2 expandtab
+      " HTML/HAML
+      autocmd FileType html,haml    set sw=2 sts=2 et
 
-  " CSS
-  autocmd FileType sass,css    set shiftwidth=2 softtabstop=2 expandtab
+      " Debugger
+      autocmd FileType ruby         nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType ruby         nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType haml         nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
+   augroup END
 
-  " Other langs
-  autocmd FileType python,php  set shiftwidth=4 softtabstop=4 expandtab
+   augroup php
+      au!
+      autocmd FileType php let b:php_folding = 1
+      autocmd FileType php	set foldlevel=10
+      autocmd FileType php	let php_htmlInStrings = 1
+      autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+      autocmd FileType php let php_baselib = 1
+"      autocmd BufWritePost *.php sil :!ctags -R -f ~/tags/commontags --tag-relative=no %:p:h
+      autocmd BufWritePost *.php sil :!ctags -RSiq -f ~/tags/commontags --tag-relative=no %:p:h
+      autocmd FileType php set makeprg=php\ -l\ %
+      autocmd FileType php set errorformat=%m\ in\ %f\ on\ line\ %l
+      "autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
+   augroup END
 
-  " Vim files
-  autocmd FileType     vim     set shiftwidth=2 softtabstop=2 expandtab
-  autocmd BufWritePost .vimrc  source $MYVIMRC
-
-  " Auto-wrap text in all buffers
-  autocmd BufRead,BufNewFile * set formatoptions+=t
-augroup END
+   augroup vimrcEx
+     au!
+     autocmd FileType text setlocal textwidth=78
+     autocmd BufReadPost *
+           \ if line("'\"") > 0 && line("'\"") <= line("$") |
+           \   exe "normal! g`\"" |
+           \ endif
+     autocmd BufWritePost .vimrc  source $MYVIMRC
+   augroup END
+ endif
 
 " show tabs as blank-padded arrows, trailing spaces as middle-dots
 set list
 set listchars=tab:→\ ,trail:·
 
+let g:directory = "~/code"
+function! Chdir(arg)
+	:exec 'cd ' a:arg
+	:exec 'Ex ' a:arg
+endfunction
+noremap <S-F1> :call Chdir(g:directory)<CR>
+
+:colorscheme desert
+:hi Normal guibg=black guifg=GhostWhite
+:hi NonText guibg=black
+
+
+set tags=./tags,tags,~/commontags
+" TIPS:
+" '. --> nos lleva a la ultima linea modificada
+" :bufdo %s/buscar/reemplazar/ge : Reemplaza la cadena en todos los buffers 
+" :bufdo comando : Ejecuta el comando en toda la lista de buffers.
+" :tab sba : Pone en pestañas todos los buffers.
+" ha! : Imprime el buffer actual por la impresora predeterminada.
+" "au BufWritePost   *.sh             !chmod +x %
+" :bufdo /searchstr/ 	Search in all open buffers
+" :g/string/d 	Delete all lines containing ?string?
+" Vu 	Lowercase line
+" VU 	Uppercase line
+" g~~ 	Invert case
+" :%s/\<./\u&/g 	Sets first letter of each word to uppercase (\l for lowercase)
+" :%s/.*/\u& 	Sets first letter of each line to uppercase
+" gf 	Open file name under cursor
+"
+" guu     : lowercase line
+" gUU     : uppercase line
+" ~       : invert case (upper->lower; lower->upper) of current character
+" gf      : open file name under cursor (SUPER)
+" AUTOCOMPLETE
+" <C-N> <C-P>   : word completion in insert mode
+" <C-X><C-L>    : Line complete
+" 
+" TAGS
+" :tag getUser => Jump to getUser method
+" :tn (or tnext) => go to next search result
+" :tp (or tprev) => to to previous search result
+" :ts (or tselect) => List the current tags 
+"
+" EXEC
+" :.!sh : Execute contents of current line in buffer and capture the output
+" Entering !! in normal mode is translated to  :.!
+" :r!ls : reads in output of ls
+
+" PHP HELPERS
+"
+"map td :s/public \$\(\w\+\).*/$class->\1 = '';/<CR>
+"map tr :s/public \$\(\w\+\).*/$class->\1 = $rs->\1;/<CR>
