@@ -13,6 +13,7 @@ toplevel="$(git rev-parse --show-toplevel)" || (echo "Not in git directory" && e
 echo "symlinking ..."
 cd "$toplevel" && for f in $(ls -A); do
   [[ $f = .git ]] && continue
+  [[ $f =~ ^[^.] ]] && continue # only dot files
   [[ -f $HOME/$f || -L $HOME/$f ]] && mv $HOME/"$f"{,.bak}
   ln -s "$toplevel/$f" $HOME/"$f"
 done
