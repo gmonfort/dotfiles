@@ -1,7 +1,7 @@
 if [[ -n "$PS1" ]]; then
 
     # Global path for cd (no matter which directory you're in right now)
-    export CDPATH=.:~:~/code
+    # export CDPATH=.:~:~/code
 
     # Keep 3000 lines of history
     export HISTFILESIZE=3000
@@ -140,7 +140,8 @@ if [[ -n "$PS1" ]]; then
     # For running specific features.
     function rff {
         # rake features FEATURE=features/"$1".feature
-        bundle exec cucumber --require features/support --require features/step_definitions features/"$1".feature
+        # bundle exec cucumber --require features/support --require features/step_definitions features/"$1".feature
+        bundle exec cucumber --require features/support --require features/step_definitions "$1"
     }
 
     # For running specific line numbers
