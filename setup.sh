@@ -22,6 +22,6 @@ cd "$toplevel" && for f in $(ls -A); do
 done
 
 # RVM
-bash < <( curl https://rvm.beginrescueend.com/install/rvm )
+# bash < <( curl https://rvm.beginrescueend.com/install/rvm )
 
 exit 0
