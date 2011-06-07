@@ -55,16 +55,17 @@ if [[ -n "$PS1" ]]; then
 
     # External Scripts #
 
-    # Hitch
-    hitch() {
-        command hitch "$@"
-        if [[ -s "$HOME/.hitch_export_authors" ]]; then
-            . "$HOME/.hitch_export_authors";
-        fi
-    };
+    # Uncomment if you use hitch
+    # # Hitch
+    # hitch() {
+    #     command hitch "$@"
+    #     if [[ -s "$HOME/.hitch_export_authors" ]]; then
+    #         . "$HOME/.hitch_export_authors";
+    #     fi
+    # };
 
-    if [[ $(type -t hitch) = "function" ]]; then hitch; fi
-    alias unhitch='hitch -u'
+    # if [[ $(type -t hitch) = "function" ]]; then hitch; fi
+    # alias unhitch='hitch -u'
 
     ################################################################################
     #                                                                              #
