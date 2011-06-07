@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BACKUP_FILES=0
+BACKUP_FILES=
 HOME=$(readlink -fn ~)
 if [ ! -z "$1" ]; then
     HOME="$1"
