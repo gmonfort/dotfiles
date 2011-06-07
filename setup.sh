@@ -15,7 +15,7 @@ echo "symlinking ..."
 cd "$toplevel" && for f in $(ls -A); do
     [[ $f = .git ]] && continue
     [[ $f =~ ^[^.] ]] && continue # only dot files
-    if [[ -f $HOME/$f || -L $HOME/$f && $BACKUP_FILES ]]; then
+    if [[ (-f $HOME/$f || -L $HOME/$f) && $BACKUP_FILES ]]; then
         mv $HOME/"$f"{,.bak}
     fi
     ln -s "$toplevel/$f" $HOME/"$f"
