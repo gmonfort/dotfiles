@@ -1,5 +1,6 @@
 #!/bin/bash
 
+BACKUP_FILES=0
 HOME=$(readlink -fn ~)
 if [ ! -z "$1" ]; then
     HOME="$1"
@@ -12,10 +13,12 @@ toplevel="$(git rev-parse --show-toplevel)" || (echo "Not in git directory" && e
 
 echo "symlinking ..."
 cd "$toplevel" && for f in $(ls -A); do
-  [[ $f = .git ]] && continue
-  [[ $f =~ ^[^.] ]] && continue # only dot files
-  [[ -f $HOME/$f || -L $HOME/$f ]] && mv $HOME/"$f"{,.bak}
-  ln -s "$toplevel/$f" $HOME/"$f"
+    [[ $f = .git ]] && continue
+    [[ $f =~ ^[^.] ]] && continue # only dot files
+    if [[ -f $HOME/$f || -L $HOME/$f && $BACKUP_FILES]]; then
+        mv $HOME/"$f"{,.bak}
+    fi
+    ln -s "$toplevel/$f" $HOME/"$f"
 done
 
 # RVM
