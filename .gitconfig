@@ -10,6 +10,7 @@
 	br = branch
 	serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
 	commiters = !git log --pretty=short --no-merges | git shortlog -nes
+    lg = log --graph --pretty=format:'%Cred%H%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [core]
 	editor = vim
 	pager = "less -RiqMSj5"
@@ -20,5 +21,7 @@
 [merge]
 	tool = vimdiff
 [user]
-	name = Cubox
-	email = dev@cuboxsa.com
+	name = German Monfort
+	email = german.monfort@gmail.com
+[rerere]
+    enabled = false

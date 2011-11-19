@@ -13,7 +13,7 @@ if [[ -n "$PS1" ]]; then
     export HISTCONTROL=ignoredups:ignorespace
 
     # Ruby development made easier
-    export RUBYOPT="rubygems Ilib Itest Ispec"
+    # export RUBYOPT="rubygems Ilib Itest Ispec"
 
     # Use vim to browse man pages. One can use Ctrl-[ and Ctrl-t
     # to browse and return from referenced man pages. ZZ or q to quit.
@@ -46,26 +46,27 @@ if [[ -n "$PS1" ]]; then
 
     xhost +LOCAL:
 
-    export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.6/dist-packages
-    export CATALINA_HOME=/var/lib/tomcat6
+    # export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.6/dist-packages
+    # export CATALINA_HOME=/var/lib/tomcat6
     export HOSTNAME=`/bin/hostname`
     # dh_make variables
     export DEBFULLNAME="German A. Monfort"
     export DEBEMAIL=german.monfort@gmail.com
 
+    export PATH="$PATH:~/bin"
+
     # External Scripts #
 
     # Uncomment if you use hitch
-    # # Hitch
-    # hitch() {
-    #     command hitch "$@"
-    #     if [[ -s "$HOME/.hitch_export_authors" ]]; then
-    #         . "$HOME/.hitch_export_authors";
-    #     fi
-    # };
+    hitch() {
+        command hitch "$@"
+        if [[ -s "$HOME/.hitch_export_authors" ]]; then
+            . "$HOME/.hitch_export_authors";
+        fi
+    };
 
-    # if [[ $(type -t hitch) = "function" ]]; then hitch; fi
-    # alias unhitch='hitch -u'
+    # if [[ $(type -t hitch) == "function" ]]; then hitch; fi
+    alias unhitch='hitch -u'
 
     ################################################################################
     #                                                                              #
@@ -138,15 +139,8 @@ if [[ -n "$PS1" ]]; then
     alias rf='rake features'
 
     # For running specific features.
-    function rff {
-        # rake features FEATURE=features/"$1".feature
-        # bundle exec cucumber --require features/support --require features/step_definitions features/"$1".feature
+    function cuke {
         bundle exec cucumber --require features/support --require features/step_definitions "$1"
-    }
-
-    # For running specific line numbers
-    function rffl {
-        cucumber features/"$1".feature:"$2"
     }
 
 ################################################################################
