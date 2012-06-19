@@ -1,27 +1,27 @@
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 [alias]
-	st = status
-	co = checkout
-	nb = checkout -b
-	up = pull --rebase
-	br = branch
-	serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
-	commiters = !git log --pretty=short --no-merges | git shortlog -nes
-    lg = log --graph --pretty=format:'%Cred%H%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  st = status
+  co = checkout
+  nb = checkout -b
+  up = pull --rebase
+  br = branch
+  serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+  commiters = !git log --pretty=short --no-merges | git shortlog -nes
+  lg = log --graph --pretty=format:'%Cred%H%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [core]
-	editor = vim
-	pager = "less -RiqMSj5"
-	autocrlf = false
-	excludesfile = "/Users/cubox/.git-local-ignores"
+  editor = vim
+  pager = "less -RiqMSj5"
+  autocrlf = false
+  excludesfile = "~/.git-local-ignores"
 [push]
-	default = tracking
+  default = tracking
 [merge]
-	tool = vimdiff
+  tool = vimdiff
 [user]
-	name = German Monfort
-	email = german.monfort@gmail.com
+  name = German Monfort
+  email = german.monfort@gmail.com
 [rerere]
-    enabled = false
+  enabled = false

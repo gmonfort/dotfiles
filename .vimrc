@@ -14,7 +14,7 @@ set hidden
 set mouse=a
 set showcmd
 
-set sw=4 ts=4 sts=4 et
+set sw=2 ts=2 sts=2 et
 
 " Indentation
 set smartindent
@@ -95,7 +95,9 @@ noremap <F2> :NERDTreeToggle<CR>
 vnoremap s' "zdi'<C-R>z'<ESC>
 vnoremap s" "zdi"<C-R>z"<ESC>
 vnoremap < <gv
-vnoremap > >gv 
+vnoremap > >gv
+
+noremap <Leader>g gg=G``
 
 " Execute current line as a vim script
 nnoremap <Leader>e "ayy :@a<CR>
@@ -149,27 +151,13 @@ if has("autocmd")
       autocmd FileType ruby,eruby   imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
       " HTML/HAML
-      autocmd FileType html,haml    set sw=2 sts=2 et
+      autocmd FileType html,haml    set sw=2 ts=2 sts=2 et
 
       " Debugger
-      autocmd FileType ruby         nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
-      autocmd FileType ruby         nnoremap <Leader>D Orequire "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType ruby         nnoremap <Leader>d orequire "debugger"; debugger; ""<Esc>
+      autocmd FileType ruby         nnoremap <Leader>D Orequire "debugger"; debugger; ""<Esc>
       autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
       autocmd FileType haml         nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
-   augroup END
-
-   augroup php
-      au!
-      autocmd FileType php let b:php_folding = 1
-      autocmd FileType php	set foldlevel=10
-      autocmd FileType php	let php_htmlInStrings = 1
-      autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-      autocmd FileType php let php_baselib = 1
-"      autocmd BufWritePost *.php sil :!ctags -R -f ~/tags/commontags --tag-relative=no %:p:h
-      autocmd BufWritePost *.php sil :!ctags -RSiq -f ~/tags/commontags --tag-relative=no %:p:h
-      autocmd FileType php set makeprg=php\ -l\ %
-      autocmd FileType php set errorformat=%m\ in\ %f\ on\ line\ %l
-      "autocmd Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
    augroup END
 
    augroup vimrcEx
@@ -194,10 +182,14 @@ function! Chdir(arg)
 endfunction
 noremap <S-F1> :call Chdir(g:directory)<CR>
 
-:colorscheme desert
-:hi Normal guibg=black guifg=GhostWhite
-:hi NonText guibg=black
 
+if has("gui_running")
+  :colorscheme railscasts
+  :hi Normal guibg=black guifg=GhostWhite
+  :hi NonText guibg=black
+else
+  :colorscheme desert
+endif
 
 set tags=./tags,tags,~/commontags
 " TIPS:
@@ -234,8 +226,3 @@ set tags=./tags,tags,~/commontags
 " :.!sh : Execute contents of current line in buffer and capture the output
 " Entering !! in normal mode is translated to  :.!
 " :r!ls : reads in output of ls
-
-" PHP HELPERS
-"
-"map td :s/public \$\(\w\+\).*/$class->\1 = '';/<CR>
-"map tr :s/public \$\(\w\+\).*/$class->\1 = $rs->\1;/<CR>

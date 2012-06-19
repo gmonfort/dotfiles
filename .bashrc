@@ -13,7 +13,7 @@ if [[ -n "$PS1" ]]; then
     export HISTCONTROL=ignoredups:ignorespace
 
     # Ruby development made easier
-    # export RUBYOPT="rubygems Ilib Itest Ispec"
+    export RUBYOPT="rubygems Ilib Itest Ispec"
 
     # Use vim to browse man pages. One can use Ctrl-[ and Ctrl-t
     # to browse and return from referenced man pages. ZZ or q to quit.
@@ -73,6 +73,19 @@ if [[ -n "$PS1" ]]; then
     #                                   Functions                                  #
     #                                                                              #
     ################################################################################
+
+    lexport() {
+        local dir='.env'
+        local file='default'
+        if [[ -n $1 && -f "$dir/$1" ]]; then
+            file="$1"
+        fi
+        if [[ ! -f "$dir/$file" ]]; then
+          echo "$dir/$file does NOT exists ..."
+        else
+          export $(cat "$dir/$file")
+        fi
+    }
 
     # cd into matching gem directory
     cdgem() {
@@ -171,3 +184,5 @@ fi
 # To temporarily bypass an alias, we preceed the command with a \ 
 # EG:  the ls command is aliased, but to use the normal ls command you would
 # type \ls
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
