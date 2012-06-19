@@ -29,6 +29,7 @@ alias gs='git status'
 alias gl='git log'
 alias gd='git diff'
 alias gdc='git diff --cached'
+alias grc='git rebase --continue'
 
 # ruby
 alias r='rake'

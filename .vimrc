@@ -53,6 +53,7 @@ set statusline+=%{&encoding},                " encoding
 set statusline+=%{&fileformat}]              " file format
 set statusline+=\ %0*									" end of black background
 set statusline+=%2*%-14.(%l,%c%V%)\ %<%0*\ %P        " offset
+set noerrorbells visualbell t_vb=
 
 if &modifiable
   set fileencoding=utf8
@@ -119,10 +120,12 @@ endif
 
 if has("autocmd")
    filetype plugin on
-   " augroup bufEnter
-   "    au!
-   "    au BufEnter * :cd %:p:h 
-   " augroup END
+   augroup bufEnter
+      au!
+      au BufEnter * :cd %:p:h 
+   augroup END
+
+   autocmd GUIEnter * set visualbell t_vb=
 
    augroup generic
       au!
@@ -156,8 +159,8 @@ if has("autocmd")
       " Debugger
       autocmd FileType ruby         nnoremap <Leader>d orequire "debugger"; debugger; ""<Esc>
       autocmd FileType ruby         nnoremap <Leader>D Orequire "debugger"; debugger; ""<Esc>
-      autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
-      autocmd FileType haml         nnoremap <Leader>D O- require "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType haml         nnoremap <Leader>d o- require "debugger"; debugger; ""<Esc>
+      autocmd FileType haml         nnoremap <Leader>D O- require "debugger"; debugger; ""<Esc>
    augroup END
 
    augroup vimrcEx
@@ -177,8 +180,8 @@ set listchars=tab:→\ ,trail:·
 
 let g:directory = "~/code"
 function! Chdir(arg)
-	:exec 'cd ' a:arg
-	:exec 'Ex ' a:arg
+  :exec 'cd ' a:arg
+  :exec 'Ex ' a:arg
 endfunction
 noremap <S-F1> :call Chdir(g:directory)<CR>
 

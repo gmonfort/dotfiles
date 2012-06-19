@@ -53,7 +53,8 @@ if [[ -n "$PS1" ]]; then
     export DEBFULLNAME="German A. Monfort"
     export DEBEMAIL=german.monfort@gmail.com
 
-    export PATH="$PATH:~/bin"
+    # export PATH="$PATH:~/bin"
+    export PATH="~/bin:$PATH"
 
     # External Scripts #
 

@@ -1,2 +1,4 @@
+.vim/.netrwhist
 .vim/swap/*
 .bash_history
+spec/support/mine.rb
