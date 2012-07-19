@@ -2,5 +2,6 @@
 .DS_Store
 .yardoc
 .env
+.rvmrc
 emule.sh
 live.sh
