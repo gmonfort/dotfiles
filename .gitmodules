@@ -4,3 +4,6 @@
 [submodule ".vim/bundle/handlebars"]
 	path = .vim/bundle/handlebars
 	url = git://github.com/nono/vim-handlebars.git
+[submodule ".vim/bundle/vim-rails"]
+	path = .vim/bundle/vim-rails
+	url = git://github.com/tpope/vim-rails.git
