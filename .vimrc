@@ -106,7 +106,7 @@ nnoremap <Leader>e "ayy :@a<CR>
 " use system registry by default
 set clipboard=unnamed
 
-call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
 
 syntax on
 filetype plugin indent on
@@ -120,10 +120,10 @@ endif
 
 if has("autocmd")
    filetype plugin on
-   augroup bufEnter
-      au!
-      au BufEnter * :cd %:p:h 
-   augroup END
+   " augroup bufEnter
+   "    au!
+   "    au BufEnter * :cd %:p:h
+   " augroup END
 
    autocmd GUIEnter * set visualbell t_vb=
 

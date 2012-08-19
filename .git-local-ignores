@@ -3,5 +3,7 @@
 .yardoc
 .env
 .rvmrc
-emule.sh
-live.sh
+tags
+public/*.epub
+public/sample-epubs/*.epub
+config/initializers/pry.rb
