@@ -44,6 +44,10 @@ if [[ -n "$PS1" ]]; then
         . /etc/bash_completion
     fi
 
+    # if [ -f ~/.git-completion.sh ]; then
+    #     . ~/.git-completion.sh
+    # fi
+
     xhost +LOCAL:
 
     # export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.6/dist-packages
@@ -76,6 +80,14 @@ if [[ -n "$PS1" ]]; then
     ################################################################################
 
     lexport() {
+      if [[ ! -f "./.env" ]]; then
+        echo ".env file does NOT exists ..."
+      else
+        export $(cat "./.env")
+      fi
+    }
+
+    lexport_by_dir() {
         local dir='.env'
         local file='default'
         if [[ -n $1 && -f "$dir/$1" ]]; then
@@ -157,22 +169,28 @@ if [[ -n "$PS1" ]]; then
         bundle exec cucumber --require features/support --require features/step_definitions "$1"
     }
 
-################################################################################
-#                                                                              #
-#                                     Prompt                                   #
-#                                                                              #
-################################################################################
+    ################################################################################
+    #                                                                              #
+    #                                     Prompt                                   #
+    #                                                                              #
+    ################################################################################
 
-# Prompt in two lines:
-#   <hostname> <full path to pwd> (git: <git branch>)
-#   ▸
-# export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
-    #   (git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+    # Prompt in two lines:
+    #   <hostname> <full path to pwd> (git: <git branch>)
+    #   ▸
+    # export PS1='\[\033[01;32m\]\h \[\033[01;33m\]\w$(__git_ps1 " \[\033[01;36m\]\
+        #   (git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
 
-# PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]]\[\033[01;34m\]\w\[\033[00m\]\$ '
+    # PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]]\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-export PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]] \[\033[01;33m\]\w $(__git_ps1 "\[\033[01;36m\](git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
+    export PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]] \[\033[01;33m\]\w $(__git_ps1 "\[\033[01;36m\](git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '
 
+    ################################################################################
+    #                                                                              #
+    #                                     Java                                     #
+    #                                                                              #
+    ################################################################################
+    export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 fi
 
 # RVM ruby version system
@@ -187,3 +205,6 @@ fi
 # type \ls
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+export RUBY_GC_MALLOC_LIMIT=60000000
+export RUBY_FREE_MIN=200000

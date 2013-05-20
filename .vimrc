@@ -120,10 +120,10 @@ endif
 
 if has("autocmd")
    filetype plugin on
-   augroup bufEnter
-      au!
-      au BufEnter * :cd %:p:h 
-   augroup END
+   " augroup bufEnter
+   "    au!
+   "    au BufEnter * :cd %:p:h 
+   " augroup END
 
    autocmd GUIEnter * set visualbell t_vb=
 
@@ -157,10 +157,11 @@ if has("autocmd")
       autocmd FileType html,haml    set sw=2 ts=2 sts=2 et
 
       " Debugger
-      autocmd FileType ruby         nnoremap <Leader>d orequire "debugger"; debugger; ""<Esc>
-      autocmd FileType ruby         nnoremap <Leader>D Orequire "debugger"; debugger; ""<Esc>
-      autocmd FileType haml         nnoremap <Leader>d o- require "debugger"; debugger; ""<Esc>
-      autocmd FileType haml         nnoremap <Leader>D O- require "debugger"; debugger; ""<Esc>
+      autocmd FileType ruby         nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType ruby         nnoremap <Leader>D orequire "debugger"; debugger; ""<Esc>
+
+      autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
+      autocmd FileType haml         nnoremap <Leader>D o- require "debugger"; debugger; ""<Esc>
    augroup END
 
    augroup vimrcEx
