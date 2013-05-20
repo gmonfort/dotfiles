@@ -83,7 +83,7 @@ if [[ -n "$PS1" ]]; then
       if [[ ! -f "./.env" ]]; then
         echo ".env file does NOT exists ..."
       else
-        export $(cat "./.env")
+        export $(cat "./.env" | grep -v "^#" | grep -v "^\s*$");
       fi
     }
 
@@ -96,7 +96,7 @@ if [[ -n "$PS1" ]]; then
         if [[ ! -f "$dir/$file" ]]; then
           echo "$dir/$file does NOT exists ..."
         else
-          export $(cat "$dir/$file")
+          export $(cat "$dir/$file" | grep -v "^#" | grep -v "^\s*$");
         fi
     }
 

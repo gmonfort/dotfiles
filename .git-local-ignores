@@ -2,5 +2,8 @@
 .DS_Store
 .yardoc
 .env
-emule.sh
-live.sh
+.rvmrc
+tags
+public/*.epub
+public/sample-epubs/*.epub
+config/initializers/pry.rb

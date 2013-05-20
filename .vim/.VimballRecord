@@ -1,0 +1,2 @@
+netrw.vba: call delete('/home/german/.vim/plugin/netrwPlugin.vim')|call delete('/home/german/.vim/autoload/netrw.vim')|call delete('/home/german/.vim/autoload/netrwFileHandlers.vim')|call delete('/home/german/.vim/autoload/netrwSettings.vim')|call delete('/home/german/.vim/doc/pi_netrw.txt')|call delete('/home/german/.vim/syntax/netrw.vim')
+tcomment.vba: call delete('/home/german/.vim/doc/tcomment.txt')|call delete('/home/german/.vim/plugin/tcomment.vim')|call delete('/home/german/.vim/autoload/tcomment.vim')
