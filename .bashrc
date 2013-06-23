@@ -34,7 +34,7 @@ if [[ -n "$PS1" ]]; then
         git_branch=$(__git_ps1)
     fi
 
-    eval "`dircolors -b`"
+    [[ "$OSTYPE" =~ "linux" ]] && eval "`dircolors -b`"
 
     if [ -f ~/.bash_aliases ]; then
         . ~/.bash_aliases
@@ -48,17 +48,18 @@ if [[ -n "$PS1" ]]; then
     #     . ~/.git-completion.sh
     # fi
 
-    xhost +LOCAL:
+    [[ "$OSTYPE" =~ "linux" ]] && xhost +LOCAL:
 
     # export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.6/dist-packages
     # export CATALINA_HOME=/var/lib/tomcat6
     export HOSTNAME=`/bin/hostname`
     # dh_make variables
-    export DEBFULLNAME="German A. Monfort"
-    export DEBEMAIL=german.monfort@gmail.com
+    if [[ "$OSTYPE" =~ "linux" ]]; then
+        export DEBFULLNAME="German A. Monfort"
+        export DEBEMAIL=german.monfort@gmail.com
+    fi
 
     # export PATH="$PATH:~/bin"
-    export PATH="~/bin:$PATH"
 
     # External Scripts #
 
@@ -190,7 +191,9 @@ if [[ -n "$PS1" ]]; then
     #                                     Java                                     #
     #                                                                              #
     ################################################################################
-    export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+    if [[ "$OSTYPE" =~ "linux" ]]; then
+    	export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+    fi
 fi
 
 # RVM ruby version system
@@ -199,8 +202,15 @@ fi
 
 export RUBY_GC_MALLOC_LIMIT=60000000
 export RUBY_FREE_MIN=200000
-export LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.4.1.0
 
+if [[ "$OSTYPE" =~ "linux" ]]; then
+    export LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.4.1.0
+fi
+
+if [[ "$OSTYPE" =~ "darwin" ]]; then
+    . /usr/local/git/contrib/completion/git-completion.bash
+    . /usr/local/git/contrib/completion/git-prompt.sh
+fi
 # NOTES
 #######################################################
 # To temporarily bypass an alias, we preceed the command with a \ 
@@ -208,6 +218,3 @@ export LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.4.1.0
 # type \ls
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
-export RUBY_GC_MALLOC_LIMIT=60000000
-export RUBY_FREE_MIN=200000
