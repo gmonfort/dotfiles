@@ -121,11 +121,13 @@ nnoremap <Leader>e "ayy :@a<CR>
 
 call pathogen#infect()
 
+"set runtimepath+=$GOROOT/misc/vim
+
 syntax on
 filetype plugin indent on
 
 if has("gui_running")
-  set guifont=Monospace\ 11  " use this font
+  set guifont=Monaco:h12  " use this font
 else
   " colorscheme elflord    " use this color scheme
   " set background=dark    " adapt colors for background
@@ -172,6 +174,12 @@ if has("autocmd")
     autocmd FileType haml         nnoremap <Leader>d o- require "debugger"; debugger; ""<Esc>
     autocmd FileType haml         nnoremap <Leader>D O- require "debugger"; debugger; ""<Esc>
   augroup END
+
+  augroup go
+    au!
+    au BufRead,BufNewFile *.go      set filetype=go
+    au BufRead,BufNewFile *.go      set listchars=tab:\ \ ,trail:·
+  augrou END
 
   augroup vimrcEx
     au!

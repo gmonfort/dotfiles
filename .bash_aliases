@@ -20,7 +20,7 @@ alias ..='cd ..'
 alias path='echo $PATH | tr ":" "\n"'
 
 # programs
-alias egrep='grep -Ern --color=auto --exclude-dir=".svn"'
+alias egrep='grep -Ern --color=auto'
 alias t='todo'
 alias c='clear'
 alias screen='screen -U'
