@@ -10,7 +10,7 @@ if [[ -n "$PS1" ]]; then
     export HISTIGNORE="&:[bf]g:c:exit"
 
     # don't put duplicate lines in the history. See bash(1) for more options
-    export HISTCONTROL=ignoredups:ignorespace
+    export HISTCONTROL=ignoredups
 
     # Ruby development made easier
     export RUBYOPT="rubygems Ilib Itest Ispec"

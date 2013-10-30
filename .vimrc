@@ -36,7 +36,7 @@ set encoding=utf8
 set tenc=utf8
 
 set foldmethod=syntax
-set foldlevelstart=99 " leave all folds open per default
+set foldlevelstart=999 " leave all folds open per default
 set formatoptions=qrct
 
 set guioptions-=T " no toolbar
@@ -73,9 +73,14 @@ set listchars=tab:→\ ,trail:·
 set tags=./tags,tags,~/commontags
 
 if has("gui_running")
-  colorscheme railscasts
+  set guifont=Monaco:h12  " use this font
+  "colorscheme railscasts
+  colorscheme distinguished
 else
-  colorscheme desert
+  " colorscheme desert
+  set t_Co=256
+  set background=dark
+  colorscheme distinguished
 endif
 
 "
@@ -122,16 +127,10 @@ nnoremap <Leader>e "ayy :@a<CR>
 call pathogen#infect()
 
 "set runtimepath+=$GOROOT/misc/vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 syntax on
 filetype plugin indent on
-
-if has("gui_running")
-  set guifont=Monaco:h12  " use this font
-else
-  " colorscheme elflord    " use this color scheme
-  " set background=dark    " adapt colors for background
-endif
 
 if has("autocmd")
   filetype plugin on
@@ -162,17 +161,23 @@ if has("autocmd")
     au!
     "autocmd FileType ruby,eruby   set omnifunc=rubycomplete#CompleteRuby
     autocmd FileType cucumber     set sw=2 ts=2 sts=2 et
-    autocmd FileType ruby,eruby   set sw=2 ts=2 sts=2 foldlevel=10 et
+    autocmd FileType ruby,eruby   set sw=2 ts=2 sts=2 foldlevel=99 et
     autocmd FileType ruby,eruby   imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
 
     " HTML/HAML
     autocmd FileType html,haml    set sw=2 ts=2 sts=2 et
 
     " Debugger
-    autocmd FileType ruby         nnoremap <Leader>d orequire "debugger"; debugger; ""<Esc>
-    autocmd FileType ruby         nnoremap <Leader>D Orequire "debugger"; debugger; ""<Esc>
-    autocmd FileType haml         nnoremap <Leader>d o- require "debugger"; debugger; ""<Esc>
-    autocmd FileType haml         nnoremap <Leader>D O- require "debugger"; debugger; ""<Esc>
+    autocmd FileType ruby         nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
+    autocmd FileType ruby         nnoremap <Leader>D orequire "debugger"; debugger; ""<Esc>
+    autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
+    autocmd FileType haml         nnoremap <Leader>D o- require "debugger"; debugger; ""<Esc>
+
+    autocmd FileType ruby
+            \ if has("balloon_eval") |
+            \   set noballooneval |
+            \ endif
+
   augroup END
 
   augroup go
