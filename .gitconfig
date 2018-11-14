@@ -1,34 +1,32 @@
 [color]
-  diff = auto
-  status = auto
-  branch = auto
+ diff = auto
+ status = auto
+ branch = auto
 [alias]
-  st = status
-  co = checkout
-  nb = checkout -b
-  up = pull --rebase
-  br = branch
-  serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
-  commiters = !git log --pretty=short --no-merges | git shortlog -nes
-  lg = log --graph --pretty=format:'%Cred%H%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+ st = status
+ co = checkout
+ nb = checkout -b
+ up = pull --rebase
+ br = branch
+ pom = push origin master
+ serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+ commiters = !git log --pretty=short --no-merges | git shortlog -nes
+ lg = log --graph --pretty=format:'%Cred%H%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+ cleanup = !git branch | grep -v \"($(git branch -a | grep 'remotes/origin/' | grep -v HEAD | cut -d/ -f3- | tr '\n' '|'  | rev | cut -c 2- | rev))\" | grep -v '*' | xargs git branch -d
+ cleanup-old = !git branch | grep -Ev \"($(git branch -a | grep 'remotes/origin/' | grep -v HEAD | cut -d/ -f3- | tr '\n' '|'  | rev | cut -c 2- | rev))\" | grep -v '*' | xargs git branch -d
 [core]
-  editor = vim
-  pager = "less -RiqMSj5"
-  autocrlf = false
-  excludesfile = "~/.git-local-ignores"
+ editor = vim
+ pager = "less -RiqMSj5"
+ autocrlf = false
+ excludesfile = "~/.gitignore"
 [push]
-  default = tracking
+ default = tracking
 [merge]
-  tool = vimdiff
+ tool = vimdiff
 [user]
-  name = German Monfort
-  email = german.monfort@gmail.com
+ name = German Monfort
+ email = german.monfort@gmail.com
 [rerere]
-  enabled = false
-[giggle]
-  main-window-maximized = true
-  main-window-geometry = 1030x533+0+59
-  history-view-vpane-position = 303
-  main-window-view = HistoryView
-  file-view-vpane-position = 388
-  file-view-hpane-position = 417
+ enabled = false
+[url "ssh://git@heroku.com/"]
+insteadOf = https://git.heroku.com/

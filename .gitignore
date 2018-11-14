@@ -1,4 +1,16 @@
 .vim/.netrwhist
 .vim/swap/*
 .bash_history
+.byebug_history
+.envrc
+.nvmrc
 spec/support/mine.rb
+.todo
+.env
+dump.rdb
+tags
+STANDUP
+Procfile.german
+_routes
+zeus.json
+.elasticbeanstalk

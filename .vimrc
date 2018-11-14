@@ -5,24 +5,15 @@ set noswapfile
 
 set directory^=~/.vim/swap//
 
-" basic config
 set number
 set ruler
-" allow to hide unsaved buffers
 set hidden
-" enable mouse (for terminals that support it)
 set mouse=a
 set showcmd
-
-set sw=2 ts=2 sts=2 et
 
 " Indentation
 set smartindent
 set autoindent
-
-" Matching brackets
-set showmatch
-runtime! macros/matchit.vim
 
 " Search config
 set incsearch
@@ -63,25 +54,38 @@ if &modifiable
   set ff=unix
 endif
 
-" use system registry by default
-set clipboard=unnamed
+" use system registry + the plus registry by default
+set clipboard=unnamedplus
+vnoremap <C-c> "+y
+vnoremap <C-x> "+c
+inoremap <C-v> <ESC>"+pa
+vnoremap <C-v> c<ESC>"+p
 
 " show tabs as blank-padded arrows, trailing spaces as middle-dots
 set list
 set listchars=tab:→\ ,trail:·
 
 set tags=./tags,tags,~/commontags
+set colorcolumn=+1        " highlight column after 'textwidth'
+set background=dark
+
+set modeline
+set modelines=5
 
 if has("gui_running")
-  set guifont=Monaco:h12  " use this font
-  "colorscheme railscasts
-  colorscheme distinguished
+  " set guifont=Monaco:h12  " use this font
+  " set guifont=DejaVu\ Sans\ Mono\ Bold\ 10
+  set guifont=DejaVu\ Sans\ Mono\ 9
+  " highlight ColorColumn ctermbg=Grey guibg=grey10
+  " colorscheme solarized
+  colorscheme slate
 else
-  " colorscheme desert
+  " let g:solarized_termcolors=256
   set t_Co=256
-  set background=dark
-  colorscheme distinguished
+  colorscheme hilal
+  " set clipboard=exclude:.*
 endif
+
 
 "
 "" Mappings
@@ -90,27 +94,12 @@ endif
 " disable search highlight until the next search
 nmap <Leader><Leader> :nohls<CR>
 
-" buffer-navigation (analogous to tab-navigation)
-nmap gb :bn<CR>
-nmap gB :bp<CR>
-
-" switchers
-nmap <Leader>i :set ignorecase!<CR>
-nmap <Leader>n :set number!<CR>
-nmap <Leader>w :set wrap!<CR>
-
-" switch between splits through f7 and f8
-map <f8> <c-w>j<c-w>_
-imap <f8> <esc><f8>
-map <f7> <c-w>k<c-w>_
-imap <f7> <esc><f7>
-
-noremap <C-BS> :bdelete<CR>
+noremap <S-BS> :bdelete<CR>
 noremap <S-Up> :bnext<CR>
 noremap <S-Down> :bprev<CR>
-noremap <F1> :E<CR>
-noremap <F9> :source ~/.vimrc<CR>
-noremap <S-F9> :e ~/.vimrc<CR>
+noremap <C-t> :tabnew<CR>
+noremap <C-Right> :tabnext<CR>
+noremap <C-Left> :tabprevious<CR>
 
 vnoremap s' "zdi'<C-R>z'<ESC>
 vnoremap s" "zdi"<C-R>z"<ESC>
@@ -120,13 +109,13 @@ vnoremap > >gv
 " Reindent the whole buffer
 noremap <Leader>g gg=G``
 
-" Execute current line as a vim script
-nnoremap <Leader>e "ayy :@a<CR>
+execute pathogen#infect()
 
+" Matchit
+set showmatch
+runtime! macros/matchit.vim
 
-call pathogen#infect()
-
-"set runtimepath+=$GOROOT/misc/vim
+" Ctrl-P
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 syntax on
@@ -146,45 +135,20 @@ if has("autocmd")
     au!
     autocmd BufRead,BufNewFile *.haml                     setfiletype haml
     autocmd BufRead,BufNewFile *.sass,*.scss              setfiletype sass
-    autocmd BufRead,BufNewFile config.ru,Gemfile,Isolate  setfiletype ruby
-    autocmd FileType javascript  set sw=2 ts=2 sts=2 et
-    autocmd FileType sass,css    set sw=2 ts=2 sts=2 et
-  augroup END
-
-  augroup python
-    au!
-    autocmd FileType python set omnifunc=pythoncomplete#CompletePython
-    autocmd FileType python set sw=2 ts=2 sts=2
+    autocmd BufRead,BufNewFile config.ru,Gemfile          setfiletype ruby
   augroup END
 
   augroup ruby
     au!
-    "autocmd FileType ruby,eruby   set omnifunc=rubycomplete#CompleteRuby
-    autocmd FileType cucumber     set sw=2 ts=2 sts=2 et
-    autocmd FileType ruby,eruby   set sw=2 ts=2 sts=2 foldlevel=99 et
-    autocmd FileType ruby,eruby   imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
-
-    " HTML/HAML
-    autocmd FileType html,haml    set sw=2 ts=2 sts=2 et
+    " autocmd FileType ruby,eruby   set omnifunc=rubycomplete#CompleteRuby
+    " autocmd FileType ruby,eruby   set sw=2 ts=2 sts=2 foldlevel=99 et
 
     " Debugger
-    autocmd FileType ruby         nnoremap <Leader>d orequire "ruby-debug"; debugger; ""<Esc>
-    autocmd FileType ruby         nnoremap <Leader>D orequire "debugger"; debugger; ""<Esc>
-    autocmd FileType haml         nnoremap <Leader>d o- require "ruby-debug"; debugger; ""<Esc>
-    autocmd FileType haml         nnoremap <Leader>D o- require "debugger"; debugger; ""<Esc>
-
-    autocmd FileType ruby
-            \ if has("balloon_eval") |
-            \   set noballooneval |
-            \ endif
+    autocmd FileType ruby         nnoremap <Leader>d obyebug<Esc>
+    autocmd FileType haml         nnoremap <Leader>d o- buebug<Esc>
+    autocmd FileType ruby,eruby   set noballooneval
 
   augroup END
-
-  augroup go
-    au!
-    au BufRead,BufNewFile *.go      set filetype=go
-    au BufRead,BufNewFile *.go      set listchars=tab:\ \ ,trail:·
-  augrou END
 
   augroup vimrcEx
     au!
@@ -197,49 +161,7 @@ if has("autocmd")
   augroup END
 endif
 
-let g:directory = "~/code"
-function! Chdir(arg)
-  :exec 'cd ' a:arg
-  :exec 'Ex ' a:arg
-endfunction
-noremap <S-F1> :call Chdir(g:directory)<CR>
+" hi Normal guibg=black guifg=GhostWhite
+" hi NonText guibg=black
 
-hi Normal guibg=black guifg=GhostWhite
-hi NonText guibg=black
-
-" some TIPS:
-"
-" '. --> nos lleva a la ultima linea modificada
-" :bufdo %s/buscar/reemplazar/ge  : Reemplaza la cadena en todos los buffers
-" :bufdo comando                  : Ejecuta el comando en toda la lista de buffers.
-" :tab sba                        : Pone en pestañas todos los buffers.
-" ha!                             : Imprime el buffer actual por la impresora predeterminada.
-" :bufdo /searchstr/              : Search in all open buffers
-" :g/string/d                     : Delete all lines containing ?string?
-" Vu                              : Lowercase line
-" VU                              : Uppercase line
-" g~~                             : Invert case
-" :%s/\<./\u&/g                   : Sets first letter of each word to uppercase (\l for lowercase)
-" :%s/.*/\u&                      : Sets first letter of each line to uppercase
-" gf                              : Open file name under cursor
-"
-" guu                             : lowercase line
-" gUU                             : uppercase line
-" ~                               : invert case (upper->lower; lower->upper) of current character
-"
-" AUTOCOMPLETE
-" <C-N> <C-P>                     : word completion in insert mode
-" <C-X><C-L>                      : Line complete
-"
-" TAGS
-" :tag getUser                    : Jump to getUser method
-" :tn (or tnext)                  : go to next search result
-" :tp (or tprev)                  : to to previous search result
-" :ts (or tselect)                : List the current tags 
-"
-" EXEC
-" :.!sh                           : Execute contents of current line in buffer and capture the output
-" !!                              : in normal mode, equivalent to :.!
-" :r!ls                           : reads in output of ls
-
-" "au BufWritePost   *.sh !chmod +x %
+set sw=2 ts=2 sts=2 et

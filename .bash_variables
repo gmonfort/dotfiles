@@ -1,0 +1,15 @@
+DEBFULLNAME="German A. Monfort"
+DEBEMAIL=german.monfort@gmail.com
+EDITOR=vim
+GIT_AUTHOR_NAME="German Monfort"
+# GIT_AUTHOR_EMAIL=german.monfort@gmail.com
+GIT_AUTHOR_EMAIL=german@wootric.com
+GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+HISTCONTROL=erasedups
+HISTSIZE=1000
+HISTFILESIZE=2000
+HISTIGNORE="&:[bf]g:c:exit"
+MANPAGER='bash -c "vim -MRn -c \"set ft=man nomod nolist nospell nonu\" \
+  -c \"nm q :qa!<CR>\" -c \"nm <end> G\" -c \"nm <home> gg\"</dev/tty <(col -b)"'
+PS1='\[\033[01;30m\][ \[\033[01;31m\]\u \[\033[01;30m\]] \[\033[01;33m\]\w $(__git_ps1 "\[\033[01;36m\](git: %s)")\[\033[01;37m\]\n▸\[\033[00m\] '

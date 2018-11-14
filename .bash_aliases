@@ -1,11 +1,3 @@
-################################################################################
-#                                                                              #
-#                                    Aliases                                   #
-#                                                                              #
-################################################################################
-
-# generic
-
 if [[ "$OSTYPE" =~ "linux" ]]; then
   alias ls='ls --color=auto -h'
 else
@@ -20,17 +12,13 @@ alias ..='cd ..'
 alias path='echo $PATH | tr ":" "\n"'
 
 # programs
-alias egrep='grep -Ern --color=auto'
-alias t='todo'
+alias egrep="grep -Ern --color=auto --exclude-dir=\*.{git,bundle} --exclude-dir=node_modules --exclude-dir=log --exclude-dir='./lib/assets/dist' --exclude-dir='./lib/assets/public'"
+alias t="todo -f '+children'"
 alias c='clear'
 alias screen='screen -U'
 alias hist='history | grep $1'
 
-# svn
-alias svndiff="svn diff --diff-cmd diff -x -uwEB"
-
 # git
-alias g='git'
 alias gs='git status'
 alias gf='git fetch'
 alias ga='git add'
@@ -39,23 +27,18 @@ alias gl='git log'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias grc='git rebase --continue'
+alias gra='git rebase --abort'
+alias gb='git branch'
 
-# ruby
-alias r='rake'
-alias rg='script/rails generate'
-alias rs='script/rails server'
-alias rc='script/rails console'
 alias tl="tail -f log/development.log"
 
 alias rfind='find . -name *.rb | xargs grep -n'
 alias z='zeus'
 
 # bundler
-alias b='bundle'
 alias bx='bundle exec'
 alias bi="bundle install"
 alias bu="bundle update"
 
-# other
-alias fs='foreman start'
+# foreman
 alias fr='foreman run'
